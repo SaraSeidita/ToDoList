@@ -56,18 +56,29 @@ function visualizzaAttivita(): void {
     if (elementoLista) {
         elementoLista.innerHTML = '';  // Pulisce la lista esistente, per evitare i duplicati
         attivita.forEach((attivita, index) => {
+
+             // aggiungo il checkbox per completare le attività
+            const checkbox = document.createElement('input'); // creo l'elemento checkbox che è un input
+            checkbox.type = 'checkbox' // aggiungo il tipo dell'input, ossia checkbox 
+            checkbox.checked = attivita.completed // se è checkato, è completata 
+            checkbox.classList.add('form-check-input', 'm-2'); // lo stile
+
+            checkbox.addEventListener('change' , () => completaAttivita(index));
+
             const elemento = document.createElement('li');
             elemento.classList.add('list-group-item', 'd-flex'); // aggiungo lo stile css boostrap all'elemento li
+
+           
             elemento.textContent = attivita.text;
             if (attivita.completed) {
                 elemento.style.textDecoration = 'line-through'; // sbarro l'item quando l'attività è completata
             }
 
-            // eventi con il click
-            elemento.addEventListener('click', () => completaAttivita(index));
+            // cancellare l'attività con il doppio click
             elemento.addEventListener('dblclick', () => eliminaAttivita(index));
 
             // aggiungo elemento alla lista
+            elemento.appendChild(checkbox);
             elementoLista.appendChild(elemento);
         });
     }
