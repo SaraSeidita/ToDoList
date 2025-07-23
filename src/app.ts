@@ -75,8 +75,6 @@ function visualizzaAttivita(): void {
            
             const testoAttivita = document.createElement('span');
 
-            
-
             divSuperiore.appendChild(checkbox); // checkbox nel div superiore 
             divSuperiore.appendChild(testoAttivita); // testo attività div superiore
             
@@ -107,10 +105,7 @@ function visualizzaAttivita(): void {
                 }
             })
                 
-
             // aggiungo elemento alla lista
-            
-            
             elementoLista.appendChild(elemento);
         });
     }
