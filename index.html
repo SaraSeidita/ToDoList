@@ -2,32 +2,52 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Lista attivita giornaliere</title>
+    <title>Lista attività giornaliere</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-    
-
-
     <div class="container">
-        <h1 class="text-center m-5">Lista attivita giornaliere</h1>
+        <h1 class="text-center m-5">Lista attività giornaliere</h1>
 
-        <div class="m-5">
-            <label for="nuovaAttivita" class="form-label">Aggiungi un'attività a piacere</label>
-            <input type="text" class="fomr-control" id="nuovaAttivita" placeholder="Scrivi l'attività che vuoi!">
-            <button class="btn btn-primary mt-2" id="aggiungiAttivitaBtn">Aggiungi</button>
-            <p id="erroreAttivita" style="color: red; display: none;"></p>
+        <!-- Struttura a due colonne -->
+        <div class="row">
+            <!-- Colonna sinistra: Lista delle attività -->
+            <div class="col-md-8">
+                <div class="mb-4">
+                    <label for="nuovaAttivita" class="form-label">Aggiungi un'attività a piacere</label>
+                    <input type="text" class="form-control" id="nuovaAttivita" placeholder="Scrivi l'attività che vuoi!">
+                    <button class="btn btn-primary mt-2" id="aggiungiAttivitaBtn">Aggiungi</button>
+                    <p id="erroreAttivita" style="color: red; display: none;"></p>
+                </div>
+
+                <ul id="content" class="list-group list-group-flush">
+                    <!-- lista delle attività -->
+                </ul>
+            </div>
+
+            <!-- Colonna destra: Card personale -->
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="picprofilo.jpg" class="card-img-top" alt="foto-profilo">
+                    <div class="card-body">
+                        <h5 class="card-title">Nome e cognome</h5>
+                        <p class="card-text">Breve descrizione</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Info 1</li>
+                        <li class="list-group-item">Info 2</li>
+                        <li class="list-group-item">Info ...</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Sito web</a>
+                        <a href="#" class="card-link">Github</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <ul id="content" class="list-group list-group-flush">
-            <!-- lista delle attività -->
-        </ul>
-        
     </div>
-
 
     <script src="./dist/app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
 </body>
 </html>
