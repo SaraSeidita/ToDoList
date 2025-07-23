@@ -17,9 +17,9 @@ function checkList(): void {
     // Se è un nuovo giorno, resetta la lista e aggiorna la data di ultima visita
     if (ultimaVisita !== dataCorrente) {
         attivita = [];  // Resetta la lista
-        localStorage.setItem('ultimaVisita', dataCorrente); 
-        localStorage.setItem('todos', JSON.stringify(attivita)); 
-    } else {
+        localStorage.setItem('ultimaVisita', dataCorrente); // aggiorna la data
+        localStorage.setItem('todos', JSON.stringify(attivita)); // salvo i nuovi item del giorno
+    } else { 
         // Altrimenti carica la lista salvata dal localStorage
         const salvaLista = localStorage.getItem('todos');
         if (salvaLista) {
@@ -54,16 +54,20 @@ function eliminaAttivita(index: number): void {
 function visualizzaAttivita(): void {
     const elementoLista = document.getElementById('content');
     if (elementoLista) {
-        elementoLista.innerHTML = '';  // Pulisce la lista esistente
+        elementoLista.innerHTML = '';  // Pulisce la lista esistente, per evitare i duplicati
         attivita.forEach((attivita, index) => {
             const elemento = document.createElement('li');
-            elemento.classList.add('list-group-item', 'd-flex');
+            elemento.classList.add('list-group-item', 'd-flex'); // aggiungo lo stile css boostrap all'elemento li
             elemento.textContent = attivita.text;
             if (attivita.completed) {
-                elemento.style.textDecoration = 'line-through';
+                elemento.style.textDecoration = 'line-through'; // sbarro l'item quando l'attività è completata
             }
+
+            // eventi con il click
             elemento.addEventListener('click', () => completaAttivita(index));
             elemento.addEventListener('dblclick', () => eliminaAttivita(index));
+
+            // aggiungo elemento alla lista
             elementoLista.appendChild(elemento);
         });
     }
@@ -96,7 +100,7 @@ function aggiungiNuovaAttivita(): void {
     }
 }
 
-// Funzione di inizializzazione
+// Funzione di inizializzazione dell'applicazione
 function initApp(): void {
     checkList();  // Verifica e carica la lista se necessario
     visualizzaAttivita();  // Visualizza le attività già caricate
