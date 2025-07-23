@@ -4,6 +4,7 @@
 interface ToDo {
     text: string;
     completed: boolean;
+    dataAggiunta: Date;
 }
 
 // Lista delle attività
@@ -30,7 +31,7 @@ function checkList(): void {
 
 // Aggiungere nuove attività
 function aggiungiAttivita(text: string): void {
-    const attivitaNuova: ToDo = { text, completed: false };
+    const attivitaNuova: ToDo = { text, completed: false, dataAggiunta: new Date() };
     attivita.push(attivitaNuova);
     salvaItem();  // Salva la lista aggiornata nel localStorage
     visualizzaAttivita();  // Rende visibile la lista aggiornata
@@ -66,19 +67,50 @@ function visualizzaAttivita(): void {
             checkbox.addEventListener('change' , () => completaAttivita(index));
 
             const elemento = document.createElement('li');
-            elemento.classList.add('list-group-item', 'd-flex'); // aggiungo lo stile css boostrap all'elemento li
+            elemento.classList.add('list-group-item'); // aggiungo lo stile css boostrap all'elemento li
+            
+            const divSuperiore = document.createElement('div');
+            divSuperiore.classList.add('d-flex', 'align-items-center')
 
            
-            elemento.textContent = attivita.text;
+            const testoAttivita = document.createElement('span');
+
+            
+
+            divSuperiore.appendChild(checkbox); // checkbox nel div superiore 
+            divSuperiore.appendChild(testoAttivita); // testo attività div superiore
+            
+            const data = new Date(attivita.dataAggiunta);
+            const dataFormattata = data.toLocaleString(); // es: "23/07/2025, 14:32:01"
+
+            const infoData = document.createElement('span');
+            infoData.textContent = `${dataFormattata}`;
+            infoData.classList.add('text-muted', 'm-2');
+
+            testoAttivita.textContent = attivita.text;
             if (attivita.completed) {
-                elemento.style.textDecoration = 'line-through'; // sbarro l'item quando l'attività è completata
+                testoAttivita.style.textDecoration = 'line-through'; // sbarro l'item quando l'attività è completata
+                infoData.style.textDecoration = 'line-through';
             }
 
-            // cancellare l'attività con il doppio click
-            elemento.addEventListener('dblclick', () => eliminaAttivita(index));
+            const divInferirore = document.createElement('div'); 
+            divInferirore.appendChild(infoData);
+
+            elemento.appendChild(divSuperiore);
+            elemento.appendChild(divInferirore);
+            
+            // cancellare l'attività con il doppio click. COnfermare prima di cancellare
+            elemento.addEventListener('dblclick', () => {
+                const conferma = confirm(`Sei sicuro di voler eliminare: "${attivita.text}"?`);
+                if (conferma) {
+                    eliminaAttivita(index);
+                }
+            })
+                
 
             // aggiungo elemento alla lista
-            elemento.appendChild(checkbox);
+            
+            
             elementoLista.appendChild(elemento);
         });
     }
