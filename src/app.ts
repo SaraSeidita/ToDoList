@@ -10,69 +10,76 @@ interface ToDo {
 
 // lista attività 
 
-let todo: ToDo[] = [];
+let attivita: ToDo[] = [];
+
+
+// salvare item?
+
 
 // aggiungere nuove attività
 
-function addTodo(text: string) : void {
-
-    const newTodo: ToDo = {
-        text, 
-        completed: false
-    }; // nuovo oggetto da aggiungere all'array delle attività inizializzato
-
-    todo.push(newTodo); // aggiunge all'array la nuova attività
-    visualizzaTodo(); // la visualizzazione della lista
+function aggiungiAttivita(text: string): void {
+    const attivitaNuova: ToDo = { text, completed: false };
+    attivita.push(attivitaNuova);
+    salvaItem();
+    visualizzaAttivita();
 }
 
-// segnare l'attività come completata quindi completed 
-
-function completeTodo(index: number) : void {
-    todo[index].completed = !todo[index].completed;
-    visualizzaTodo();
+// Completa un'attività
+function completaAttivita(index: number): void {
+    attivita[index].completed = !attivita[index].completed;
+    salvaItem();
+    visualizzaAttivita();
 }
 
-// la funzione visualizzaTodo: per la visualizzazione della lista dall'html 
+// Elimina un'attività
+function eliminaAttivita(index: number): void {
+    attivita.splice(index, 1); // Rimuove l'elemento
+    salvaItem();
+    visualizzaAttivita();
+}
 
-function visualizzaTodo(): void {
-    const elementoLista = document.getElementById('content'); // dal div presente in index.html 
+// Visualizza la lista delle attività
+function visualizzaAttivita(): void {
+    const elementoLista = document.getElementById('content');
     if (elementoLista) {
-        elementoLista.innerHTML = ''; // Se è presente l'elemento, pulisce la lista esistente. Evito i duplicati al click 
-        todo.forEach((todo, index) => {
-            const elemento = document.createElement('li'); 
-            elemento.classList.add('list-group-item', 'd-flex')
-            elemento.textContent = todo.text;
-            if (todo.completed) {
-                elemento.style.textDecoration = 'line-through'; // se l'attività è completata, si sbarra
+        elementoLista.innerHTML = ''; // Pulisce la lista esistente
+        attivita.forEach((attivita, index) => {
+            const elemento = document.createElement('li');
+            elemento.classList.add('list-group-item', 'd-flex');
+            elemento.textContent = attivita.text;
+            if (attivita.completed) {
+                elemento.style.textDecoration = 'line-through';
             }
-
-            elemento.addEventListener('click', () => completeTodo(index));
-            elementoLista.appendChild(elemento); // senza questo non appare la lista
-        })
+            elemento.addEventListener('click', () => completaAttivita(index));
+            elemento.addEventListener('dblclick', () => eliminaAttivita(index));
+            elementoLista.appendChild(elemento);
+        });
     }
 }
 
-function aggiungiNuovoTodo() {
-    // prendo gli elementi dall'html
-    const aggiungiAttivitaBtn = document.getElementById('aggiungiAttivitaBtn');
-    const nuovaAttivita = document.getElementById('nuovaAttivita') as HTMLInputElement;  // Cast dell'elemento a HTMLInputElement
+function salvaItem(): void {
+    localStorage.setItem('todos', JSON.stringify(attivita));
+}
 
-    // se l'utente aggiunge l'attività 
-    if(aggiungiAttivitaBtn && nuovaAttivita) {
-        aggiungiAttivitaBtn.addEventListener('click', () => { // evento on click
-            const attivitaText = nuovaAttivita.value.trim(); // Ora TypeScript sa che 'nuovaAttivita' è un input e ha la proprietà 'value'
+// Gestisce l'aggiunta di una nuova attività
+function aggiungiNuovaAttivita(): void {
+    const aggiungiAttivitaBtn = document.getElementById('aggiungiAttivitaBtn');
+    const nuovaAttivita = document.getElementById('nuovaAttivita') as HTMLInputElement;
+
+    if (aggiungiAttivitaBtn && nuovaAttivita) {
+        aggiungiAttivitaBtn.addEventListener('click', () => {
+            const attivitaText = nuovaAttivita.value.trim();
             if (attivitaText !== '') {
-                addTodo(attivitaText); // aggiunge all'array l'attività
+                aggiungiAttivita(attivitaText); // Aggiungi l'attività all'array
                 nuovaAttivita.value = ''; // Reset del campo input
             }
-        })
+        });
     }
 }
 
 
-aggiungiNuovoTodo(); 
-
-visualizzaTodo();
-
-addTodo('Inizio esercizio');
-addTodo('Prova css');
+aggiungiNuovaAttivita();
+visualizzaAttivita();
+aggiungiAttivita('Prima attivita di prova');
+aggiungiAttivita('Seconda attivita di prova');

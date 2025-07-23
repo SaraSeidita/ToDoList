@@ -1,67 +1,62 @@
 "use strict";
 // TO DO LIST 
-
-
-
 // lista attività 
 let attivita = [];
+// salvare item?
 // aggiungere nuove attività
 function aggiungiAttivita(text) {
-    const attivitaNuova = {
-        text,
-        completed: false
-    }; // nuovo oggetto da aggiungere all'array delle attività inizializzato
-    attivita.push(attivitaNuova); // aggiunge all'array la nuova attività
-    visualizzaAttivita(); // la visualizzazione della lista
+    const attivitaNuova = { text, completed: false };
+    attivita.push(attivitaNuova);
+    salvaItem();
+    visualizzaAttivita();
 }
-
-
-// segnare l'attività come completata quindi completed 
+// Completa un'attività
 function completaAttivita(index) {
     attivita[index].completed = !attivita[index].completed;
+    salvaItem();
     visualizzaAttivita();
 }
-
-// eliminare attivita 
+// Elimina un'attività
 function eliminaAttivita(index) {
-    attivita.splice(index, 1); // comando per rimuovere l'elemento dall'array. Stesso principio del completare l'attività (evento click)
+    attivita.splice(index, 1); // Rimuove l'elemento
+    salvaItem();
     visualizzaAttivita();
 }
-
-// la funzione visualizzaTodo: per la visualizzazione della lista dall'html 
+// Visualizza la lista delle attività
 function visualizzaAttivita() {
-    const elementoLista = document.getElementById('content'); // dal div presente in index.html 
+    const elementoLista = document.getElementById('content');
     if (elementoLista) {
-        elementoLista.innerHTML = ''; // Se è presente l'elemento, pulisce la lista esistente. Evito i duplicati al click 
+        elementoLista.innerHTML = ''; // Pulisce la lista esistente
         attivita.forEach((attivita, index) => {
             const elemento = document.createElement('li');
             elemento.classList.add('list-group-item', 'd-flex');
             elemento.textContent = attivita.text;
             if (attivita.completed) {
-                elemento.style.textDecoration = 'line-through'; // se l'attività è completata, si sbarra
+                elemento.style.textDecoration = 'line-through';
             }
             elemento.addEventListener('click', () => completaAttivita(index));
             elemento.addEventListener('dblclick', () => eliminaAttivita(index));
-            elementoLista.appendChild(elemento); // senza questo non appare la lista
+            elementoLista.appendChild(elemento);
         });
     }
 }
+function salvaItem() {
+    localStorage.setItem('todos', JSON.stringify(attivita));
+}
+// Gestisce l'aggiunta di una nuova attività
 function aggiungiNuovaAttivita() {
-    // prendo gli elementi dall'html
     const aggiungiAttivitaBtn = document.getElementById('aggiungiAttivitaBtn');
-    const nuovaAttivita = document.getElementById('nuovaAttivita'); // Cast dell'elemento a HTMLInputElement
-    // se l'utente aggiunge l'attività 
+    const nuovaAttivita = document.getElementById('nuovaAttivita');
     if (aggiungiAttivitaBtn && nuovaAttivita) {
         aggiungiAttivitaBtn.addEventListener('click', () => {
-            const attivitaText = nuovaAttivita.value.trim(); // 'nuovaAttivita' è un input e ha la proprietà 'value'
+            const attivitaText = nuovaAttivita.value.trim();
             if (attivitaText !== '') {
-                aggiungiAttivita(attivitaText); // aggiunge all'array l'attività
+                aggiungiAttivita(attivitaText); // Aggiungi l'attività all'array
                 nuovaAttivita.value = ''; // Reset del campo input
             }
         });
     }
 }
-
 aggiungiNuovaAttivita();
 visualizzaAttivita();
 aggiungiAttivita('Prima attivita di prova');
