@@ -52,6 +52,25 @@ function visualizzaTodo(): void {
     }
 }
 
+function aggiungiNuovoTodo() {
+    // prendo gli elementi dall'html
+    const aggiungiAttivitaBtn = document.getElementById('aggiungiAttivitaBtn');
+    const nuovaAttivita = document.getElementById('nuovaAttivita') as HTMLInputElement;  // Cast dell'elemento a HTMLInputElement
+
+    // se l'utente aggiunge l'attività 
+    if(aggiungiAttivitaBtn && nuovaAttivita) {
+        aggiungiAttivitaBtn.addEventListener('click', () => { // evento on click
+            const attivitaText = nuovaAttivita.value.trim(); // Ora TypeScript sa che 'nuovaAttivita' è un input e ha la proprietà 'value'
+            if (attivitaText !== '') {
+                addTodo(attivitaText); // aggiunge all'array l'attività
+                nuovaAttivita.value = ''; // Reset del campo input
+            }
+        })
+    }
+}
+
+
+aggiungiNuovoTodo(); 
 
 visualizzaTodo();
 
