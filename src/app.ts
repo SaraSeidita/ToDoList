@@ -99,17 +99,24 @@ function salvaItem(): void {
 function aggiungiNuovaAttivita(): void {
     const aggiungiAttivitaBtn = document.getElementById('aggiungiAttivitaBtn');
     const nuovaAttivita = document.getElementById('nuovaAttivita') as HTMLInputElement;
+    const erroreAttivita = document.getElementById('erroreAttivita');
 
-    if (aggiungiAttivitaBtn && nuovaAttivita) {
+    if (aggiungiAttivitaBtn && nuovaAttivita && erroreAttivita) {
         aggiungiAttivitaBtn.addEventListener('click', () => {
             const attivitaText = nuovaAttivita.value.trim();
-            if (attivitaText !== '') {
-                aggiungiAttivita(attivitaText);  // Aggiungi l'attività all'array
-                nuovaAttivita.value = '';  // Reset del campo input
+
+            if (attivitaText === '') {
+                erroreAttivita.textContent = 'Inserisci un\'attività prima di aggiungere.';
+                erroreAttivita.style.display = 'block';
+            } else {
+                aggiungiAttivita(attivitaText); // Aggiungi all’array o lista
+                nuovaAttivita.value = '';
+                erroreAttivita.style.display = 'none'; // Nascondi errore
             }
         });
     }
 }
+
 
 // Funzione di inizializzazione dell'applicazione
 function initApp(): void {
