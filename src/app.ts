@@ -113,13 +113,7 @@ function visualizzaAttivita(): void {
 
 // Funzione per salvare la lista nel localStorage
 function salvaItem(): void {
-    if (typeof(Storage) !== "undefined") {
-            // Salva la lista nel localStorage
-            localStorage.setItem('todos', JSON.stringify(attivita));
-            console.log('Lista salvata nel localStorage');
-        } else {
-            console.error('localStorage non è supportato');
-        }
+    localStorage.setItem('todos', JSON.stringify(attivita));
 }
 
 // Gestisce l'aggiunta di una nuova attività
